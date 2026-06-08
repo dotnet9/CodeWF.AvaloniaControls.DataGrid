@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
+    <ApplicationIcon>..\..\logo.ico</ApplicationIcon>
     <TargetFrameworks>net11.0;net11.0-windows</TargetFrameworks>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.Desktop" />
@@ -16,7 +16,6 @@
     <PackageReference Include="Semi.Avalonia.TreeDataGrid" />
     <PackageReference Include="VC-LTL" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\CodeWF.AvaloniaControls.DataGrid\CodeWF.AvaloniaControls.DataGrid.csproj" />
   </ItemGroup>
