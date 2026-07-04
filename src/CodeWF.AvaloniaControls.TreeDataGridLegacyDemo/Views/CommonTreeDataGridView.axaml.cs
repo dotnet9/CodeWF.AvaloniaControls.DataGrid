@@ -4,7 +4,6 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.VisualTree;
-using CodeWF.AvaloniaControls;
 using CodeWF.AvaloniaControls.TreeDataGridLegacyDemo.Models;
 using CodeWF.AvaloniaControls.TreeDataGridLegacyDemo.ViewModels;
 using System.Linq;

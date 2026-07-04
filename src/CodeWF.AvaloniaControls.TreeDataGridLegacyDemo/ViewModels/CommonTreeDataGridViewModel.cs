@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Controls.Models.TreeDataGrid;
 using CodeWF.AvaloniaControls.TreeDataGridLegacyDemo.Models;
 using System;
 using System.Collections.ObjectModel;
@@ -10,16 +11,14 @@ namespace CodeWF.AvaloniaControls.TreeDataGridLegacyDemo.ViewModels;
 public sealed class CommonTreeDataGridViewModel : ViewModelBase
 {
     private const int RecordCount = 200;
-    private string _resultText = $"共 {RecordCount:N0} 行";
-    private string _targetValueText = "普通节点 1";
-    private int _targetFieldIndex = 1;
+    private const string DefaultTargetName = "普通节点 1";
     private int? _highlightedId;
-    private string? _highlightedName;
+    private string? _highlightedName = DefaultTargetName;
 
     public CommonTreeDataGridViewModel()
     {
         Records = new ObservableCollection<LegacyTreeRecord>(LegacyTreeGridData.CreateCommonRecords(RecordCount));
-        Source = LegacyTreeGridData.CreateSource(Records);
+        Source = LegacyTreeGridData.CreateSource(Records, ShouldHighlight);
     }
 
     public string Header { get; } = "通用示例";
@@ -30,21 +29,21 @@ public sealed class CommonTreeDataGridViewModel : ViewModelBase
 
     public int TargetFieldIndex
     {
-        get => _targetFieldIndex;
-        set => SetProperty(ref _targetFieldIndex, value);
-    }
+        get;
+        set => SetProperty(ref field, value);
+    } = 1;
 
     public string TargetValueText
     {
-        get => _targetValueText;
-        set => SetProperty(ref _targetValueText, value);
-    }
+        get;
+        set => SetProperty(ref field, value);
+    } = DefaultTargetName;
 
     public string ResultText
     {
-        get => _resultText;
-        private set => SetProperty(ref _resultText, value);
-    }
+        get;
+        private set => SetProperty(ref field, value);
+    } = $"任务名称 {DefaultTargetName} 已设置为灰色并置顶";
 
     public bool SetTargetRowBackground()
     {
@@ -79,7 +78,9 @@ public sealed class CommonTreeDataGridViewModel : ViewModelBase
 
         _highlightedId = id;
         _highlightedName = null;
-        ResultText = $"编号 {id} 已设置为灰色";
+        BringHighlightedRecordToTop();
+        ReapplySorting();
+        ResultText = $"编号 {id} 已设置为灰色并置顶";
         return true;
     }
 
@@ -93,7 +94,9 @@ public sealed class CommonTreeDataGridViewModel : ViewModelBase
 
         _highlightedId = null;
         _highlightedName = name;
-        ResultText = $"任务名称 {name} 已设置为灰色";
+        BringHighlightedRecordToTop();
+        ReapplySorting();
+        ResultText = $"任务名称 {name} 已设置为灰色并置顶";
         return true;
     }
 
@@ -101,6 +104,8 @@ public sealed class CommonTreeDataGridViewModel : ViewModelBase
     {
         _highlightedId = null;
         _highlightedName = null;
+        RestoreDefaultRecordOrder();
+        ReapplySorting();
         ResultText = "已清除";
     }
 
@@ -109,5 +114,51 @@ public sealed class CommonTreeDataGridViewModel : ViewModelBase
         return record.Id == _highlightedId ||
             (_highlightedName is not null &&
              string.Equals(record.Name, _highlightedName, StringComparison.Ordinal));
+    }
+
+    private void BringHighlightedRecordToTop()
+    {
+        var record = Records.FirstOrDefault(ShouldHighlight);
+        if (record is null)
+        {
+            return;
+        }
+
+        var index = Records.IndexOf(record);
+        if (index > 0)
+        {
+            Records.Move(index, 0);
+        }
+    }
+
+    private void RestoreDefaultRecordOrder()
+    {
+        var orderedRecords = Records.OrderBy(x => x.Id).ToList();
+        for (var targetIndex = 0; targetIndex < orderedRecords.Count; targetIndex++)
+        {
+            var currentIndex = Records.IndexOf(orderedRecords[targetIndex]);
+            if (currentIndex != targetIndex)
+            {
+                Records.Move(currentIndex, targetIndex);
+            }
+        }
+    }
+
+    private void ReapplySorting()
+    {
+        IColumn? sortedColumn = null;
+        foreach (var column in Source.Columns)
+        {
+            if (column.SortDirection is not null)
+            {
+                sortedColumn = column;
+                break;
+            }
+        }
+
+        if (sortedColumn?.SortDirection is { } direction)
+        {
+            ((ITreeDataGridSource)Source).SortBy(sortedColumn, direction);
+        }
     }
 }

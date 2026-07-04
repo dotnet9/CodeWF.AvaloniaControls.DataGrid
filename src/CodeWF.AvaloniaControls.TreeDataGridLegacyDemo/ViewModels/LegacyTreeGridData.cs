@@ -1,28 +1,96 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
 using CodeWF.AvaloniaControls.TreeDataGridLegacyDemo.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq.Expressions;
 
 namespace CodeWF.AvaloniaControls.TreeDataGridLegacyDemo.ViewModels;
 
 internal static class LegacyTreeGridData
 {
-    public static FlatTreeDataGridSource<LegacyTreeRecord> CreateSource(ObservableCollection<LegacyTreeRecord> records)
+    public static FlatTreeDataGridSource<LegacyTreeRecord> CreateSource(
+        ObservableCollection<LegacyTreeRecord> records,
+        Func<LegacyTreeRecord, bool>? shouldPin = null)
     {
         return new FlatTreeDataGridSource<LegacyTreeRecord>(records)
         {
             Columns =
             {
-                new TextColumn<LegacyTreeRecord, int>("编号", x => x.Id),
-                new TextColumn<LegacyTreeRecord, string>("任务名称", x => x.Name),
-                new TextColumn<LegacyTreeRecord, string>("产线", x => x.Line),
-                new TextColumn<LegacyTreeRecord, string>("主机", x => x.Host),
-                new TextColumn<LegacyTreeRecord, string>("模式", x => x.Mode),
-                new TextColumn<LegacyTreeRecord, string>("责任人", x => x.Owner),
-                new TextColumn<LegacyTreeRecord, string>("状态", x => x.Status),
+                CreateTextColumn("编号", x => x.Id, shouldPin),
+                CreateTextColumn("任务名称", x => x.Name, shouldPin),
+                CreateTextColumn("产线", x => x.Line, shouldPin),
+                CreateTextColumn("主机", x => x.Host, shouldPin),
+                CreateTextColumn("模式", x => x.Mode, shouldPin),
+                CreateTextColumn("责任人", x => x.Owner, shouldPin),
+                CreateTextColumn("状态", x => x.Status, shouldPin),
             }
         };
+    }
+
+    private static TextColumn<LegacyTreeRecord, TValue> CreateTextColumn<TValue>(
+        string header,
+        Expression<Func<LegacyTreeRecord, TValue?>> getter,
+        Func<LegacyTreeRecord, bool>? shouldPin)
+    {
+        return new TextColumn<LegacyTreeRecord, TValue>(
+            header,
+            getter,
+            options: CreatePinnedSortOptions(getter.Compile(), shouldPin));
+    }
+
+    private static TextColumnOptions<LegacyTreeRecord>? CreatePinnedSortOptions<TValue>(
+        Func<LegacyTreeRecord, TValue?> selector,
+        Func<LegacyTreeRecord, bool>? shouldPin)
+    {
+        if (shouldPin is null)
+        {
+            return null;
+        }
+
+        return new TextColumnOptions<LegacyTreeRecord>
+        {
+            CompareAscending = (x, y) => ComparePinned(x, y, selector, shouldPin, descending: false),
+            CompareDescending = (x, y) => ComparePinned(x, y, selector, shouldPin, descending: true),
+        };
+    }
+
+    private static int ComparePinned<TValue>(
+        LegacyTreeRecord? x,
+        LegacyTreeRecord? y,
+        Func<LegacyTreeRecord, TValue?> selector,
+        Func<LegacyTreeRecord, bool> shouldPin,
+        bool descending)
+    {
+        if (ReferenceEquals(x, y))
+        {
+            return 0;
+        }
+
+        if (x is null)
+        {
+            return 1;
+        }
+
+        if (y is null)
+        {
+            return -1;
+        }
+
+        var pinComparison = GetPinRank(x, shouldPin).CompareTo(GetPinRank(y, shouldPin));
+        if (pinComparison != 0)
+        {
+            return pinComparison;
+        }
+
+        var valueComparison = Comparer<TValue>.Default.Compare(selector(x), selector(y));
+        return descending ? -valueComparison : valueComparison;
+    }
+
+    private static int GetPinRank(LegacyTreeRecord record, Func<LegacyTreeRecord, bool> shouldPin)
+    {
+        return shouldPin(record) ? 0 : 1;
     }
 
     public static List<LegacyTreeRecord> CreateCommonRecords(int count)
