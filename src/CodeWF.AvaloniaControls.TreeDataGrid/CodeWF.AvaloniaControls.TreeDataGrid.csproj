@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Title>CodeWF.AvaloniaControls.TreeDataGrid</Title>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <OutputType>Library</OutputType>
+    <IsPackable>true</IsPackable>
+    <Version>11.1.1.1</Version>
+    <Description>封装一些基于旧版免费 Avalonia TreeDataGrid 的控件扩展，支持三态排序、全选和智能 ToolTip，固定支持 Avalonia.Controls.TreeDataGrid 11.1.1 和 Semi.Avalonia.TreeDataGrid 11.1.1.1。</Description>
+    <PackageIcon>logo.png</PackageIcon>
+    <PackageTags>avalonia ui treedatagrid controls custom unsort select-all</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <RootNamespace>CodeWF.AvaloniaControls.TreeDataGrid</RootNamespace>
+    <AssemblyName>CodeWF.AvaloniaControls.TreeDataGrid</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.300" PrivateAssets="all" />
+    <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.1.1" />
+    <PackageReference Include="Semi.Avalonia.TreeDataGrid" Version="11.1.1.1" />
+  </ItemGroup>
+</Project>

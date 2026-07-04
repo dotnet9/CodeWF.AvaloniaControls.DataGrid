@@ -6,7 +6,8 @@
     <LangVersion>latest</LangVersion>
     <OutputType>Library</OutputType>
     <IsPackable>true</IsPackable>
-    <Description>封装一些基于 Avalonia 的 DataGrid 控件扩展，支持列取消排序等扩展功能。Encapsulate some extensions for Avalonia DataGrid controls, including tri-state unsort support.</Description>
+    <Version>12.0.1.1</Version>
+    <Description>封装一些基于 Avalonia DataGrid 的控件扩展，支持列取消排序和智能 ToolTip 等扩展功能。Encapsulate extensions for Avalonia DataGrid controls, including tri-state unsort and smart tooltip support.</Description>
     <PackageIcon>logo.png</PackageIcon>
     <PackageTags>avalonia ui datagrid controls custom unsort</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -15,13 +16,8 @@
     <AssemblyName>CodeWF.AvaloniaControls.DataGrid</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="all" />
-    <PackageReference Include="Avalonia.Controls.DataGrid" />
-    <PackageReference Include="Avalonia.Controls.TreeDataGrid" />
-    <PackageReference Include="Semi.Avalonia.DataGrid" />
-    <PackageReference Include="Semi.Avalonia.TreeDataGrid" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\logo.png" Pack="true" PackagePath="" Link="logo.png" Visible="false" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.300" PrivateAssets="all" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="12.0.1" />
+    <PackageReference Include="Semi.Avalonia.DataGrid" Version="12.0.0" />
   </ItemGroup>
 </Project>

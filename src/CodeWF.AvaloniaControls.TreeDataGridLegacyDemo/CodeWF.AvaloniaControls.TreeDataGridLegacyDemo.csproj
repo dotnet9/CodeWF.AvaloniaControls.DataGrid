@@ -8,15 +8,15 @@
     <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" />
-    <PackageReference Include="Avalonia.Desktop" />
-    <PackageReference Include="Avalonia.Fonts.Inter" />
-    <PackageReference Include="Avalonia.Controls.TreeDataGrid" />
-    <PackageReference Include="Semi.Avalonia" />
-    <PackageReference Include="Semi.Avalonia.TreeDataGrid" />
-    <PackageReference Include="VC-LTL" />
+    <PackageReference Include="Avalonia" Version="11.3.7" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.7" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.7" />
+    <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.1.1" />
+    <PackageReference Include="Semi.Avalonia" Version="11.3.7.3" />
+    <PackageReference Include="Semi.Avalonia.TreeDataGrid" Version="11.1.1.1" />
+    <PackageReference Include="VC-LTL" Version="5.3.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CodeWF.AvaloniaControls.DataGrid\CodeWF.AvaloniaControls.DataGrid.csproj" />
+    <ProjectReference Include="..\CodeWF.AvaloniaControls.TreeDataGrid\CodeWF.AvaloniaControls.TreeDataGrid.csproj" />
   </ItemGroup>
 </Project>

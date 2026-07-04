@@ -5,7 +5,6 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <IncludeSymbols>true</IncludeSymbols>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <Version>11.3.7.1</Version>
     <Authors>沙漠尽头的狼</Authors>
     <RepositoryUrl>https://github.com/dotnet9/CodeWF.AvaloniaControls.DataGrid</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

@@ -18,8 +18,10 @@ echo [2/3] Building solution...
 dotnet build CodeWF.AvaloniaControls.DataGrid.slnx -c %CONFIGURATION% --no-restore
 if errorlevel 1 goto :error
 
-echo [3/3] Packing library...
+echo [3/3] Packing libraries...
 dotnet pack "src\CodeWF.AvaloniaControls.DataGrid\CodeWF.AvaloniaControls.DataGrid.csproj" -c %CONFIGURATION% --no-build -o "%PACKAGES_DIR%"
+if errorlevel 1 goto :error
+dotnet pack "src\CodeWF.AvaloniaControls.TreeDataGrid\CodeWF.AvaloniaControls.TreeDataGrid.csproj" -c %CONFIGURATION% --no-build -o "%PACKAGES_DIR%"
 if errorlevel 1 goto :error
 
 echo.
