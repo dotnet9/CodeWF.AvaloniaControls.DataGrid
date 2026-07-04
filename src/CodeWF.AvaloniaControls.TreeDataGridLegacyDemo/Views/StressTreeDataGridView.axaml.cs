@@ -32,5 +32,6 @@ public partial class StressTreeDataGridView : UserControl
         StressTreeDataGrid.Source = viewModel.Source;
         StressTreeDataGrid.AddSorting(viewModel.Source);
         StressTreeDataGrid.AddSelectAll(viewModel.Source);
+        StressTreeDataGrid.EnableSmartTooltips();
     }
 }

@@ -42,6 +42,7 @@ public partial class CommonTreeDataGridView : UserControl
         CommonTreeDataGrid.Source = viewModel.Source;
         CommonTreeDataGrid.AddSorting(viewModel.Source);
         CommonTreeDataGrid.AddSelectAll(viewModel.Source);
+        CommonTreeDataGrid.EnableSmartTooltips();
         RefreshVisibleRows();
     }
 
