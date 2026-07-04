@@ -1,5 +1,17 @@
 # 更新日志
 
+## 12.0.1.1 / 11.1.1.1 (2026-07-04)
+
+- 🔨[优化]-拆分为 `CodeWF.AvaloniaControls.DataGrid` 和 `CodeWF.AvaloniaControls.TreeDataGrid` 两个 NuGet 包。
+- 🔨[优化]-`CodeWF.AvaloniaControls.DataGrid` 升级到 `12.0.1.1`，仅引用 `Avalonia.Controls.DataGrid` `12.0.1` 和 `Semi.Avalonia.DataGrid` `12.0.0`。
+- 🔨[优化]-`CodeWF.AvaloniaControls.TreeDataGrid` 固定为 `11.1.1.1`，仅引用 `Avalonia.Controls.TreeDataGrid` `11.1.1` 和 `Semi.Avalonia.TreeDataGrid` `11.1.1.1`。
+- 🔨[优化]-移除根目录 `Directory.Packages.props`，改为在各项目 `.csproj` 中显式维护依赖版本，便于 DataGrid、TreeDataGrid 和 Demo 分别固定不同 Avalonia 版本线。
+- 😄[新增]-为 `TreeDataGridExtension` 增加 `EnableSmartTooltips` 扩展方法，支持仅在文本显示不全时显示 ToolTip。
+- 🔤[优化]-TreeDataGrid 示例字符串列改用自然排序，避免 `普通节点 100` 排在 `普通节点 11` 前面。
+- 🔤[优化]-DataGrid 示例字符串列改用自然排序，并修正自定义排序比较器下的三态取消排序识别。
+- 🔨[优化]-TreeDataGrid 三态排序注册改为幂等，避免重复注册后第三次点击取消排序又触发升序排序。
+- 🔤[优化]-DataGrid 通用示例的灰色目标行加入排序置顶优先级，设置或清除后会刷新当前排序视图。
+
 ## 12.0.2.3 (2026-06-08)
 
 - 🔨[优化]-补齐根目录 logo.svg、logo.png、logo.ico 三件套，子工程通过 MSBuild Link 引用根 logo，避免维护多份图标副本。
@@ -8,7 +20,7 @@
 
 ## 12.0.2.2 (2026-06-08)
 
-- 统一版本号维护入口，只在仓库根目录 `Directory.Build.props` 中定义 `<Version>`。
+- 保留根目录 `Directory.Build.props` 作为通用打包元数据入口，包版本改由各 NuGet 项目单独维护。
 - 清理英文/双语文档入口，后续仅维护简体中文文档。
 - 完善 NuGet 发布配置，补充 Source Link、符号包和标签格式规范。
 
@@ -63,6 +75,6 @@ V12.0.2（2026-05-02）
 ## 2026-06-08 仓库规范整理
 
 - 统一文档维护入口：每个仓库只保留根目录 `README.md` 和根目录 `UpdateLog.md`，清理重复日志、英文文档和语言切换入口。
-- 统一版本维护入口：包版本只在仓库根目录 `Directory.Build.props` 的 `<Version>` 节点维护，移除散落的程序集版本配置。
+- 版本维护入口：通用打包元数据保留在根目录 `Directory.Build.props`，包版本由各 NuGet 项目单独维护。
 - 不再维护 `global.json`，SDK 选择交给本机或 CI 环境；NuGet 包和应用的目标框架在项目文件中明确声明。
 - 统一 NuGet 包文档入口：包 README 统一引用仓库根 `README.md`，更新日志统一引用仓库根 `UpdateLog.md`。
