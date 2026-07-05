@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
+using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Reactive;
@@ -9,6 +10,7 @@ using Avalonia.VisualTree;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -26,8 +28,38 @@ public interface IDataGridSortDirectionAwareComparer : IComparer
 public static class DataGridExtension
 {
     private static readonly ConditionalWeakTable<DataGrid, DataGridSortingState> SortingRegistrations = new();
+    private static readonly ConditionalWeakTable<DataGrid, DataGridDefaultState> DefaultRegistrations = new();
     private static readonly MethodInfo? GetSortPropertyNameMethod =
         typeof(DataGridColumn).GetMethod("GetSortPropertyName", BindingFlags.Instance | BindingFlags.NonPublic);
+
+    /// <summary>
+    /// 为 DataGrid 一次性启用默认增强：三态排序、自然排序和智能 ToolTip。
+    /// </summary>
+    public static void EnableDefaults(
+        this DataGrid dataGrid,
+        bool enableSorting = true,
+        bool enableNaturalSorting = true,
+        bool enableSmartTooltips = true)
+    {
+        var state = DefaultRegistrations.GetValue(dataGrid, grid => new DataGridDefaultState(grid));
+
+        if (enableSorting && !state.SortingEnabled)
+        {
+            dataGrid.AddSorting();
+            state.SortingEnabled = true;
+        }
+
+        if (enableNaturalSorting)
+        {
+            state.EnableNaturalSorting();
+        }
+
+        if (enableSmartTooltips && !state.SmartTooltipsEnabled)
+        {
+            dataGrid.EnableSmartTooltips();
+            state.SmartTooltipsEnabled = true;
+        }
+    }
 
     /// <summary>
     /// 为 DataGrid 添加三态排序：升序、降序、取消排序。
@@ -76,6 +108,15 @@ public static class DataGridExtension
 
             view.Refresh();
         };
+    }
+
+    /// <summary>
+    /// 为所有可排序绑定列补充自然排序比较器。
+    /// </summary>
+    public static void AddNaturalSorting(this DataGrid dataGrid)
+    {
+        var state = DefaultRegistrations.GetValue(dataGrid, grid => new DataGridDefaultState(grid));
+        state.EnableNaturalSorting();
     }
 
     private static DataGridCollectionView? GetOrCreateCollectionView(DataGrid dataGrid)
@@ -160,8 +201,84 @@ public static class DataGridExtension
         }
     }
 
+    private sealed class DataGridDefaultState
+    {
+        private readonly DataGrid _dataGrid;
+        private bool _naturalSortingEnabled;
+
+        public DataGridDefaultState(DataGrid dataGrid)
+        {
+            _dataGrid = dataGrid;
+        }
+
+        public bool SortingEnabled { get; set; }
+
+        public bool SmartTooltipsEnabled { get; set; }
+
+        public void EnableNaturalSorting()
+        {
+            if (_naturalSortingEnabled)
+            {
+                ApplyNaturalSortComparers();
+                return;
+            }
+
+            _naturalSortingEnabled = true;
+            if (_dataGrid.Columns is INotifyCollectionChanged columns)
+            {
+                columns.CollectionChanged += OnColumnsChanged;
+            }
+
+            ApplyNaturalSortComparers();
+        }
+
+        private void OnColumnsChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            ApplyNaturalSortComparers();
+        }
+
+        private void ApplyNaturalSortComparers()
+        {
+            foreach (var column in _dataGrid.Columns)
+            {
+                ApplyNaturalSortComparer(column);
+            }
+        }
+
+        private static void ApplyNaturalSortComparer(DataGridColumn column)
+        {
+            if (!column.CanUserSort || column.CustomSortComparer is not null)
+            {
+                return;
+            }
+
+            var sortPath = GetColumnSortPath(column);
+            if (string.IsNullOrWhiteSpace(sortPath))
+            {
+                return;
+            }
+
+            column.CustomSortComparer = new DataGridNaturalSortComparer(sortPath);
+        }
+
+        private static string? GetColumnSortPath(DataGridColumn column)
+        {
+            if (!string.IsNullOrWhiteSpace(column.SortMemberPath))
+            {
+                return column.SortMemberPath;
+            }
+
+            if (column is DataGridBoundColumn { Binding: Binding binding })
+            {
+                return binding.Path;
+            }
+
+            return GetSortPropertyName(column);
+        }
+    }
+
     /// <summary>
-    /// 判断是否双击了 DataGrid 的行。
+    /// 判断是否双击了 DataGrid 行。
     /// </summary>
     public static bool IsDoubleClickRow(TappedEventArgs? e)
     {
@@ -228,7 +345,8 @@ public static class DataGridExtension
         textBlocks.ForEach(SetupSmartTooltip);
     }
 
-    private static void FindVisualChildren<T>(Visual visual, List<T> array) where T : Visual
+    private static void FindVisualChildren<T>(Visual visual, List<T> array)
+        where T : Visual
     {
         foreach (var child in visual.GetVisualChildren())
         {
