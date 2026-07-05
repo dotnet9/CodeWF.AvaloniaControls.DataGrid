@@ -25,6 +25,33 @@ public static class TreeDataGridExtension
     private static readonly ConditionalWeakTable<TreeDataGrid, TreeDataGridSortingState> SortingRegistrations = new();
 
     /// <summary>
+    /// 为 TreeDataGrid 一次性启用默认增强：三态排序、Ctrl+A 全选和智能 ToolTip。
+    /// </summary>
+    public static void EnableDefaults<T>(
+        this TreeDataGrid treeDataGrid,
+        FlatTreeDataGridSource<T> itemSource,
+        bool enableSorting = true,
+        bool enableSelectAll = true,
+        bool enableSmartTooltips = true)
+        where T : class
+    {
+        if (enableSorting)
+        {
+            treeDataGrid.AddSorting(itemSource);
+        }
+
+        if (enableSelectAll)
+        {
+            treeDataGrid.AddSelectAll(itemSource);
+        }
+
+        if (enableSmartTooltips)
+        {
+            treeDataGrid.EnableSmartTooltips();
+        }
+    }
+
+    /// <summary>
     /// 为 TreeDataGrid 添加三态排序：升序、降序、取消排序。
     /// </summary>
     public static void AddSorting<T>(this TreeDataGrid treeDataGrid, FlatTreeDataGridSource<T> itemSource)

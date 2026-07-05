@@ -1,5 +1,11 @@
 # 更新日志
 
+## 12.0.1.2 / 11.1.1.2 (2026-07-05)
+
+- 😄[新增]-`CodeWF.AvaloniaControls.DataGrid` 新增 `EnableDefaults`、`AddNaturalSorting`、`DataGridNaturalSortComparer` 和 `DataGridEnhancement.UseDefaults`。
+- 😄[新增]-`CodeWF.AvaloniaControls.TreeDataGrid` 新增 `EnableDefaults(source)`，用于统一启用三态排序、Ctrl+A 全选和智能 ToolTip。
+- 🔨[优化]-示例工程改为调用统一默认增强入口，减少调用方重复组合扩展方法。
+
 ## 12.0.1.1 / 11.1.1.1 (2026-07-04)
 
 - 🔨[优化]-拆分为 `CodeWF.AvaloniaControls.DataGrid` 和 `CodeWF.AvaloniaControls.TreeDataGrid` 两个 NuGet 包。

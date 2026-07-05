@@ -9,8 +9,8 @@ Avalonia DataGrid / TreeDataGrid 辅助包与可运行示例。
 
 ## 仓库规范
 
-- `CodeWF.AvaloniaControls.DataGrid` 当前版本：`12.0.1.1`。
-- `CodeWF.AvaloniaControls.TreeDataGrid` 当前版本：`11.1.1.1`。
+- `CodeWF.AvaloniaControls.DataGrid` 当前版本：`12.0.1.2`。
+- `CodeWF.AvaloniaControls.TreeDataGrid` 当前版本：`11.1.1.2`。
 - 每个 NuGet 项目的包版本和依赖版本在各自 `.csproj` 中维护，避免 DataGrid、TreeDataGrid 和 Demo 之间的 Avalonia 版本线互相牵制。
 - NuGet 包项目统一支持 `net8.0;net10.0`；Demo、App、测试与内部应用项目统一使用 `net11.0` / `net11.0-windows`。
 - 根目录 `logo.svg`、`logo.png`、`logo.ico` 是唯一图标源，子工程只通过 MSBuild `Link` 引用，不维护图标副本。
@@ -21,6 +21,34 @@ Avalonia DataGrid / TreeDataGrid 辅助包与可运行示例。
 ```powershell
 Install-Package CodeWF.AvaloniaControls.DataGrid
 Install-Package CodeWF.AvaloniaControls.TreeDataGrid
+```
+
+## 快速启用
+
+DataGrid 支持分别启用单项能力，也支持统一启用默认增强：
+
+```csharp
+dataGrid.AddSorting();
+dataGrid.AddNaturalSorting();
+dataGrid.EnableSmartTooltips();
+dataGrid.EnableDefaults();
+```
+
+在 XAML 全局样式中也可以统一启用 DataGrid 默认增强：
+
+```xml
+<Style Selector="DataGrid">
+  <Setter Property="(codewf:DataGridEnhancement.UseDefaults)" Value="True" />
+</Style>
+```
+
+TreeDataGrid 需要传入 `FlatTreeDataGridSource<T>`，可以单项启用，也可以统一启用：
+
+```csharp
+treeDataGrid.AddSorting(source);
+treeDataGrid.AddSelectAll(source);
+treeDataGrid.EnableSmartTooltips();
+treeDataGrid.EnableDefaults(source);
 ```
 
 ## 包线范围
@@ -35,7 +63,7 @@ Install-Package CodeWF.AvaloniaControls.TreeDataGrid
 - `Avalonia.Controls.TreeDataGrid` `11.1.1`
 - `Semi.Avalonia.TreeDataGrid` `11.1.1.1`
 
-该包提供 TreeDataGrid 三态排序、全选和智能 ToolTip 扩展方法。
+该包提供 TreeDataGrid 三态排序、全选、智能 ToolTip 和统一默认增强扩展方法。
 
 高于该包线的官方 TreeDataGrid 版本涉及商业 License 授权，因此本仓库将 TreeDataGrid 扩展独立成单独 NuGet 并固定依赖版本。
 

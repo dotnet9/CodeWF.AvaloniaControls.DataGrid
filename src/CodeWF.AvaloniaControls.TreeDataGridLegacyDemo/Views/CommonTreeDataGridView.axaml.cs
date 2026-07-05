@@ -40,9 +40,7 @@ public partial class CommonTreeDataGridView : UserControl
 
         _viewModel = viewModel;
         CommonTreeDataGrid.Source = viewModel.Source;
-        CommonTreeDataGrid.AddSorting(viewModel.Source);
-        CommonTreeDataGrid.AddSelectAll(viewModel.Source);
-        CommonTreeDataGrid.EnableSmartTooltips();
+        CommonTreeDataGrid.EnableDefaults(viewModel.Source);
         RefreshVisibleRows();
     }
 
