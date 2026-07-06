@@ -1,0 +1,8 @@
+<UserControl
+    x:Class="CodeWF.AvaloniaControls.TreeDataGridDemo.Views.StressTreeDataGridView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:tdg="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls.TreeDataGrid"
+    Background="White">
+    <tdg:TreeDataGrid x:Name="StressTreeDataGrid" />
+</UserControl>

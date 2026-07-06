@@ -1,5 +1,12 @@
 # 更新日志
 
+## 12.0.1.3 / 11.1.1.3 (2026-07-06)
+
+- 😄[新增]-新增 `CodeWF.AvaloniaControls.DataGrid.Themes`，提供 `codewf:DataGridSemiTheme` 入口并复用 `Semi.Avalonia.DataGrid` 主题资源。
+- 😄[新增]-新增 `CodeWF.AvaloniaControls.TreeDataGrid.Themes`，同步提供 `codewf:TreeDataGridSemiTheme`，但继续固定在 `Avalonia.Controls.TreeDataGrid 11.1.1` 免费包线。
+- 🔨[优化]-`CodeWF.AvaloniaControls.DataGrid` 和 `CodeWF.AvaloniaControls.TreeDataGrid` 核心扩展包移除 Semi 主题包依赖，主题资源改由独立 Themes 包承载。
+- 🔨[优化]-示例工程去掉旧后缀命名，改为 `CodeWF.AvaloniaControls.DataGridDemo` 和 `CodeWF.AvaloniaControls.TreeDataGridDemo`。
+
 ## 12.0.1.2 / 11.1.1.2 (2026-07-05)
 
 - 😄[新增]-`CodeWF.AvaloniaControls.DataGrid` 新增 `EnableDefaults`、`AddNaturalSorting`、`DataGridNaturalSortComparer` 和 `DataGridEnhancement.UseDefaults`。
@@ -33,7 +40,7 @@
 
 ## 12.0.2.1 - 2026-05-08
 
-- Migrated `CodeWF.AvaloniaControls.DataGrid`, `CodeWF.AvaloniaControls.DataGridLegacyDemo`, and `CodeWF.AvaloniaControls.TreeDataGridLegacyDemo` from the main `CodeWF.AvaloniaControls` repository.
+- Migrated `CodeWF.AvaloniaControls.DataGrid`, `CodeWF.AvaloniaControls.DataGridDemo`, and `CodeWF.AvaloniaControls.TreeDataGridDemo` from the main `CodeWF.AvaloniaControls` repository.
 - Added standalone solution, pack script, publish script, and repository metadata for the legacy free DataGrid / TreeDataGrid package line.
 
 ## 11.2.1.9 - 2025-07-15
@@ -55,26 +62,26 @@ V12.0.2（2026-05-02）
 
 ---
 
-## 归档：src\CodeWF.AvaloniaControls.DataGridLegacyDemo\UpdateLog.md
+## 归档：src\CodeWF.AvaloniaControls.DataGridDemo\UpdateLog.md
 
 # 更新日志
 
 V12.0.2（2026-05-02）
 
-- 😄[新增]-新增当前工程独立更新日志文件，后续 `CodeWF.AvaloniaControls.DataGridLegacyDemo` 的变更改为在工程目录内持续记录
+- 😄[新增]-新增当前工程独立更新日志文件，后续 `CodeWF.AvaloniaControls.DataGridDemo` 的变更改为在工程目录内持续记录
 - 😄[新增]-新增独立旧版免费 `DataGrid` 专项示例工程，用于承载最后一个免费开源版本链路
 - 😄[新增]-新增大数据量 `TabControl` 切换演示场景，便于直观看到旧版 `DataGrid` 在多页签之间切换时的卡顿与重绘压力
 - 🔤[优化]-统一补充中文界面文案，并接入 `CodeWF.AvaloniaControls.DataGrid` 扩展方法用于三态排序与智能提示展示
 
 ---
 
-## 归档：src\CodeWF.AvaloniaControls.TreeDataGridLegacyDemo\UpdateLog.md
+## 归档：src\CodeWF.AvaloniaControls.TreeDataGridDemo\UpdateLog.md
 
 # 更新日志
 
 V12.0.2（2026-05-02）
 
-- 😄[新增]-新增当前工程独立更新日志文件，后续 `CodeWF.AvaloniaControls.TreeDataGridLegacyDemo` 的变更改为在工程目录内持续记录
+- 😄[新增]-新增当前工程独立更新日志文件，后续 `CodeWF.AvaloniaControls.TreeDataGridDemo` 的变更改为在工程目录内持续记录
 - 😄[新增]-新增独立旧版免费 `TreeDataGrid` 专项示例工程，用于承载最后一个免费开源版本链路
 - 😄[新增]-新增大数据量 `TabControl` 切换演示场景，便于与旧版 `DataGrid` 做直观的切换流畅度对照
 - 🔤[优化]-接入 `CodeWF.AvaloniaControls.DataGrid` 中的 `TreeDataGrid` 扩展方法，并统一整理为中文界面文案

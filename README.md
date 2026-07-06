@@ -3,14 +3,16 @@
 | 名称 | NuGet | 下载量 |
 |------|-------|--------|
 | CodeWF.AvaloniaControls.DataGrid | [![NuGet](https://img.shields.io/nuget/v/CodeWF.AvaloniaControls.DataGrid.svg)](https://www.nuget.org/packages/CodeWF.AvaloniaControls.DataGrid/) | [![NuGet](https://img.shields.io/nuget/dt/CodeWF.AvaloniaControls.DataGrid.svg)](https://www.nuget.org/packages/CodeWF.AvaloniaControls.DataGrid/) |
+| CodeWF.AvaloniaControls.DataGrid.Themes | [![NuGet](https://img.shields.io/nuget/v/CodeWF.AvaloniaControls.DataGrid.Themes.svg)](https://www.nuget.org/packages/CodeWF.AvaloniaControls.DataGrid.Themes/) | [![NuGet](https://img.shields.io/nuget/dt/CodeWF.AvaloniaControls.DataGrid.Themes.svg)](https://www.nuget.org/packages/CodeWF.AvaloniaControls.DataGrid.Themes/) |
 | CodeWF.AvaloniaControls.TreeDataGrid | [![NuGet](https://img.shields.io/nuget/v/CodeWF.AvaloniaControls.TreeDataGrid.svg)](https://www.nuget.org/packages/CodeWF.AvaloniaControls.TreeDataGrid/) | [![NuGet](https://img.shields.io/nuget/dt/CodeWF.AvaloniaControls.TreeDataGrid.svg)](https://www.nuget.org/packages/CodeWF.AvaloniaControls.TreeDataGrid/) |
+| CodeWF.AvaloniaControls.TreeDataGrid.Themes | [![NuGet](https://img.shields.io/nuget/v/CodeWF.AvaloniaControls.TreeDataGrid.Themes.svg)](https://www.nuget.org/packages/CodeWF.AvaloniaControls.TreeDataGrid.Themes/) | [![NuGet](https://img.shields.io/nuget/dt/CodeWF.AvaloniaControls.TreeDataGrid.Themes.svg)](https://www.nuget.org/packages/CodeWF.AvaloniaControls.TreeDataGrid.Themes/) |
 
 Avalonia DataGrid / TreeDataGrid 辅助包与可运行示例。
 
 ## 仓库规范
 
-- `CodeWF.AvaloniaControls.DataGrid` 当前版本：`12.0.1.2`。
-- `CodeWF.AvaloniaControls.TreeDataGrid` 当前版本：`11.1.1.2`。
+- `CodeWF.AvaloniaControls.DataGrid` / `CodeWF.AvaloniaControls.DataGrid.Themes` 当前版本：`12.0.1.3`。
+- `CodeWF.AvaloniaControls.TreeDataGrid` / `CodeWF.AvaloniaControls.TreeDataGrid.Themes` 当前版本：`11.1.1.3`。
 - 每个 NuGet 项目的包版本和依赖版本在各自 `.csproj` 中维护，避免 DataGrid、TreeDataGrid 和 Demo 之间的 Avalonia 版本线互相牵制。
 - NuGet 包项目统一支持 `net8.0;net10.0`；Demo、App、测试与内部应用项目统一使用 `net11.0` / `net11.0-windows`。
 - 根目录 `logo.svg`、`logo.png`、`logo.ico` 是唯一图标源，子工程只通过 MSBuild `Link` 引用，不维护图标副本。
@@ -20,7 +22,9 @@ Avalonia DataGrid / TreeDataGrid 辅助包与可运行示例。
 
 ```powershell
 Install-Package CodeWF.AvaloniaControls.DataGrid
+Install-Package CodeWF.AvaloniaControls.DataGrid.Themes
 Install-Package CodeWF.AvaloniaControls.TreeDataGrid
+Install-Package CodeWF.AvaloniaControls.TreeDataGrid.Themes
 ```
 
 ## 快速启用
@@ -57,11 +61,13 @@ treeDataGrid.EnableDefaults(source);
 
 - `Avalonia.Controls.DataGrid` `12.0.1`
 - `Semi.Avalonia.DataGrid` `12.0.0`
+- `Semi.Avalonia` `12.0.3`
 
 `CodeWF.AvaloniaControls.TreeDataGrid` 固定在旧版免费 TreeDataGrid 包线：
 
 - `Avalonia.Controls.TreeDataGrid` `11.1.1`
 - `Semi.Avalonia.TreeDataGrid` `11.1.1.1`
+- `Semi.Avalonia` `11.3.7.3`
 
 该包提供 TreeDataGrid 三态排序、全选、智能 ToolTip 和统一默认增强扩展方法。
 
@@ -70,14 +76,16 @@ treeDataGrid.EnableDefaults(source);
 ## 仓库结构
 
 - `src/CodeWF.AvaloniaControls.DataGrid`：DataGrid NuGet 类库
+- `src/CodeWF.AvaloniaControls.DataGrid.Themes`：DataGrid Semi 主题 NuGet 类库
 - `src/CodeWF.AvaloniaControls.TreeDataGrid`：TreeDataGrid NuGet 类库
-- `src/CodeWF.AvaloniaControls.DataGridLegacyDemo`：DataGrid 压力示例
-- `src/CodeWF.AvaloniaControls.TreeDataGridLegacyDemo`：旧版 TreeDataGrid 压力示例
+- `src/CodeWF.AvaloniaControls.TreeDataGrid.Themes`：TreeDataGrid Semi 主题 NuGet 类库
+- `src/CodeWF.AvaloniaControls.DataGridDemo`：DataGrid 压力示例
+- `src/CodeWF.AvaloniaControls.TreeDataGridDemo`：TreeDataGrid 压力示例
 - `CodeWF.AvaloniaControls.DataGrid.slnx`：独立解决方案
 
 ## 脚本
 
-- `pack.bat`：还原、构建并打包两个 NuGet 类库到 `artifacts/packages`
+- `pack.bat`：还原、构建并打包 NuGet 类库到 `artifacts/packages`
 - `publish_all.bat`：发布 DataGrid 和 TreeDataGrid 示例应用到 `publish/`
 - `publishbase.bat`：`publish_all.bat` 使用的共享发布辅助脚本
 

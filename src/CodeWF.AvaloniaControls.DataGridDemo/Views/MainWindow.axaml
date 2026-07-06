@@ -1,0 +1,50 @@
+<Window
+    x:Class="CodeWF.AvaloniaControls.DataGridDemo.Views.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:views="clr-namespace:CodeWF.AvaloniaControls.DataGridDemo.Views"
+    Width="1380"
+    Height="920"
+    Background="White"
+    FontFamily="Microsoft YaHei UI, Microsoft YaHei, Segoe UI"
+    Title="DataGrid 免费开源版示例">
+    <Window.Styles>
+        <Style Selector="TabControl.DemoTabs">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Padding" Value="12" />
+        </Style>
+        <Style Selector="TabItem.DemoTab">
+            <Setter Property="MinWidth" Value="136" />
+            <Setter Property="MinHeight" Value="42" />
+            <Setter Property="Margin" Value="0,0,10,8" />
+            <Setter Property="Padding" Value="16,10" />
+            <Setter Property="Background" Value="#F8FAFC" />
+            <Setter Property="Foreground" Value="#334155" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+        </Style>
+        <Style Selector="TabItem.DemoTab:pointerover">
+            <Setter Property="Background" Value="#EFF6FF" />
+            <Setter Property="Foreground" Value="#1D4ED8" />
+        </Style>
+        <Style Selector="TabItem.DemoTab:selected">
+            <Setter Property="Background" Value="#2563EB" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+    </Window.Styles>
+
+    <TabControl Classes="DemoTabs" TabStripPlacement="Left">
+        <TabItem Classes="DemoTab" Header="{Binding Common.Header}">
+            <views:CommonDataGridView DataContext="{Binding Common}" />
+        </TabItem>
+        <TabItem Classes="DemoTab" Header="{Binding ScenarioOne.Header}">
+            <views:StressDataGridView DataContext="{Binding ScenarioOne}" />
+        </TabItem>
+        <TabItem Classes="DemoTab" Header="{Binding ScenarioTwo.Header}">
+            <views:StressDataGridView DataContext="{Binding ScenarioTwo}" />
+        </TabItem>
+        <TabItem Classes="DemoTab" Header="{Binding ScenarioThree.Header}">
+            <views:StressDataGridView DataContext="{Binding ScenarioThree}" />
+        </TabItem>
+    </TabControl>
+</Window>

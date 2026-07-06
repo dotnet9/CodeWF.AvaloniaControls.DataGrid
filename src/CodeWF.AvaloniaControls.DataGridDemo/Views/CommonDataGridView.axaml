@@ -1,0 +1,43 @@
+<UserControl
+    x:Class="CodeWF.AvaloniaControls.DataGridDemo.Views.CommonDataGridView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="White">
+    <Grid Margin="12" RowDefinitions="Auto,*" RowSpacing="10">
+        <Border
+            Padding="12"
+            Background="White"
+            BorderBrush="#DCE3EE"
+            BorderThickness="1"
+            CornerRadius="8">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <TextBlock VerticalAlignment="Center" Text="字段" />
+                <ComboBox
+                    Width="120"
+                    SelectedIndex="{Binding TargetFieldIndex, Mode=TwoWay}">
+                    <ComboBoxItem Content="编号" />
+                    <ComboBoxItem Content="任务名称" />
+                </ComboBox>
+                <TextBlock VerticalAlignment="Center" Text="值" />
+                <TextBox
+                    x:Name="TargetValueTextBox"
+                    Width="180"
+                    VerticalContentAlignment="Center"
+                    KeyDown="TargetValueTextBox_KeyDown"
+                    PlaceholderText="输入匹配值"
+                    Text="{Binding TargetValueText, Mode=TwoWay}"
+                    />
+                <Button Click="SetTargetRowBackgroundButton_Click" Content="设置灰色" />
+                <Button Click="ClearTargetRowBackgroundButton_Click" Content="清除" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    Foreground="#64748B"
+                    Text="{Binding ResultText}" />
+            </StackPanel>
+        </Border>
+
+        <DataGrid
+            x:Name="CommonDataGrid"
+            Grid.Row="1" />
+    </Grid>
+</UserControl>

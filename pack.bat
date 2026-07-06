@@ -21,7 +21,11 @@ if errorlevel 1 goto :error
 echo [3/3] Packing libraries...
 dotnet pack "src\CodeWF.AvaloniaControls.DataGrid\CodeWF.AvaloniaControls.DataGrid.csproj" -c %CONFIGURATION% --no-build -o "%PACKAGES_DIR%"
 if errorlevel 1 goto :error
+dotnet pack "src\CodeWF.AvaloniaControls.DataGrid.Themes\CodeWF.AvaloniaControls.DataGrid.Themes.csproj" -c %CONFIGURATION% --no-build -o "%PACKAGES_DIR%"
+if errorlevel 1 goto :error
 dotnet pack "src\CodeWF.AvaloniaControls.TreeDataGrid\CodeWF.AvaloniaControls.TreeDataGrid.csproj" -c %CONFIGURATION% --no-build -o "%PACKAGES_DIR%"
+if errorlevel 1 goto :error
+dotnet pack "src\CodeWF.AvaloniaControls.TreeDataGrid.Themes\CodeWF.AvaloniaControls.TreeDataGrid.Themes.csproj" -c %CONFIGURATION% --no-build -o "%PACKAGES_DIR%"
 if errorlevel 1 goto :error
 
 echo.

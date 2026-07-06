@@ -1,7 +1,0 @@
-<UserControl
-    x:Class="CodeWF.AvaloniaControls.DataGridLegacyDemo.Views.StressDataGridView"
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Background="White">
-    <DataGrid x:Name="StressDataGrid" Margin="12" />
-</UserControl>

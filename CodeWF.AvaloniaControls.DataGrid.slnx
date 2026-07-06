@@ -1,7 +1,7 @@
 <Solution>
   <Folder Name="/samples/">
-    <Project Path="src/CodeWF.AvaloniaControls.DataGridLegacyDemo/CodeWF.AvaloniaControls.DataGridLegacyDemo.csproj" />
-    <Project Path="src/CodeWF.AvaloniaControls.TreeDataGridLegacyDemo/CodeWF.AvaloniaControls.TreeDataGridLegacyDemo.csproj" />
+    <Project Path="src/CodeWF.AvaloniaControls.DataGridDemo/CodeWF.AvaloniaControls.DataGridDemo.csproj" />
+    <Project Path="src/CodeWF.AvaloniaControls.TreeDataGridDemo/CodeWF.AvaloniaControls.TreeDataGridDemo.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".gitignore" />
@@ -16,5 +16,7 @@
     <File Path="UpdateLog.md" />
   </Folder>
   <Project Path="src/CodeWF.AvaloniaControls.DataGrid/CodeWF.AvaloniaControls.DataGrid.csproj" />
+  <Project Path="src/CodeWF.AvaloniaControls.DataGrid.Themes/CodeWF.AvaloniaControls.DataGrid.Themes.csproj" />
   <Project Path="src/CodeWF.AvaloniaControls.TreeDataGrid/CodeWF.AvaloniaControls.TreeDataGrid.csproj" />
+  <Project Path="src/CodeWF.AvaloniaControls.TreeDataGrid.Themes/CodeWF.AvaloniaControls.TreeDataGrid.Themes.csproj" />
 </Solution>
