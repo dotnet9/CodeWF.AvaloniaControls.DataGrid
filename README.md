@@ -11,8 +11,8 @@ Avalonia DataGrid / TreeDataGrid 辅助包与可运行示例。
 
 ## 仓库规范
 
-- `CodeWF.AvaloniaControls.DataGrid` 当前版本：`12.1.0.2`；`CodeWF.AvaloniaControls.DataGrid.Themes` 当前版本：`12.1.0.1`。
-- `CodeWF.AvaloniaControls.TreeDataGrid` 当前版本：`11.1.1.4`；`CodeWF.AvaloniaControls.TreeDataGrid.Themes` 当前版本：`11.1.1.3`。
+- `CodeWF.AvaloniaControls.DataGrid` 与 `CodeWF.AvaloniaControls.DataGrid.Themes` 当前版本：`12.1.0.2`。
+- `CodeWF.AvaloniaControls.TreeDataGrid` 与 `CodeWF.AvaloniaControls.TreeDataGrid.Themes` 当前版本：`11.1.1.4`。
 - 每个 NuGet 项目的包版本和依赖版本在各自 `.csproj` 中维护，避免 DataGrid、TreeDataGrid 和 Demo 之间的 Avalonia 版本线互相牵制。
 - NuGet 包项目统一支持 `net8.0;net10.0`；Demo、App、测试与内部应用项目统一使用 `net11.0` / `net11.0-windows`。
 - 根目录 `logo.svg`、`logo.png`、`logo.ico` 是唯一图标源，子工程只通过 MSBuild `Link` 引用，不维护图标副本。
