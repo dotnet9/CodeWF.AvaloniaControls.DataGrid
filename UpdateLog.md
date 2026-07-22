@@ -1,5 +1,10 @@
 # 更新日志
 
+## 12.1.0.2 / 11.1.1.4 (2026-07-22)
+
+- 🐛[修复]-DataGrid 与 TreeDataGrid 的智能 ToolTip 文本前景色绑定当前 ToolTip 主题，不再受宿主全局 TextBlock 前景色影响。
+- 🔨[优化]-按单元格按需缓存 ToolTip 文本控件，主题切换可实时生效且不增加持续分配。
+
 ## 12.0.1.3 / 11.1.1.3 (2026-07-06)
 
 - 😄[新增]-新增 `CodeWF.AvaloniaControls.DataGrid.Themes`，提供 `codewf:DataGridSemiTheme` 入口并复用 `Semi.Avalonia.DataGrid` 主题资源。

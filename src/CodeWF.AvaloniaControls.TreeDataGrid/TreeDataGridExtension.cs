@@ -23,6 +23,7 @@ namespace CodeWF.AvaloniaControls;
 public static class TreeDataGridExtension
 {
     private static readonly ConditionalWeakTable<TreeDataGrid, TreeDataGridSortingState> SortingRegistrations = new();
+    private static readonly ConditionalWeakTable<TextBlock, ThemeAwareToolTipTextBlock> SmartToolTipContents = new();
 
     /// <summary>
     /// 为 TreeDataGrid 一次性启用默认增强：三态排序、Ctrl+A 全选和智能 ToolTip。
@@ -372,12 +373,50 @@ public static class TreeDataGridExtension
                 FlowDirection.LeftToRight,
                 new Typeface(textBlock.FontFamily, textBlock.FontStyle, textBlock.FontWeight),
                 textBlock.FontSize,
-                Brushes.Black);
+                textBlock.Foreground);
 
-            ToolTip.SetTip(textBlock, formattedText.Width > textBlock.Bounds.Width ? textBlock.Text : null);
+            ToolTip.SetTip(
+                textBlock,
+                formattedText.Width > textBlock.Bounds.Width ? GetSmartToolTipContent(textBlock) : null);
         }
         catch
         {
+        }
+    }
+
+    private static TextBlock GetSmartToolTipContent(TextBlock owner)
+    {
+        var content = SmartToolTipContents.GetValue(owner, static _ => new ThemeAwareToolTipTextBlock());
+
+        content.Text = owner.Text;
+        return content;
+    }
+
+    private sealed class ThemeAwareToolTipTextBlock : TextBlock
+    {
+        private IDisposable? _foregroundBinding;
+
+        public ThemeAwareToolTipTextBlock()
+        {
+            TextWrapping = TextWrapping.Wrap;
+        }
+
+        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            base.OnAttachedToVisualTree(e);
+
+            _foregroundBinding?.Dispose();
+            if (this.FindAncestorOfType<ToolTip>() is { } toolTip)
+            {
+                _foregroundBinding = Bind(ForegroundProperty, toolTip.GetObservable(ToolTip.ForegroundProperty));
+            }
+        }
+
+        protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            _foregroundBinding?.Dispose();
+            _foregroundBinding = null;
+            base.OnDetachedFromVisualTree(e);
         }
     }
 }
