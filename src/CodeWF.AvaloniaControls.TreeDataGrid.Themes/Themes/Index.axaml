@@ -1,3 +1,23 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Styles.Resources>
+        <SolidColorBrush x:Key="DataGridRowBorderBrush">#F0F0F0</SolidColorBrush>
+        <SolidColorBrush x:Key="DataGridRowSelectedBorderBrush">#D9E3EF</SolidColorBrush>
+        <Thickness x:Key="DataGridRowBorderThickness">0,0,0,1</Thickness>
+    </Styles.Resources>
+
+    <Style Selector="TreeDataGridRow">
+        <Setter Property="BorderBrush" Value="{DynamicResource DataGridRowBorderBrush}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource DataGridRowBorderThickness}" />
+    </Style>
+    <Style Selector="TreeDataGridRow:selected">
+        <Setter Property="BorderBrush" Value="{DynamicResource DataGridRowSelectedBorderBrush}" />
+    </Style>
+    <Style Selector="TreeDataGridRow /template/ Border#RowBorder">
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="CornerRadius" Value="0" />
+    </Style>
+    <Style Selector="TreeDataGridRow:selected /template/ Border#RowBorder">
+        <Setter Property="Background" Value="{DynamicResource TreeDataGridCellSelectedBackground}" />
+    </Style>
 </Styles>
