@@ -3,6 +3,8 @@
     <Styles.Resources>
         <SolidColorBrush x:Key="DataGridRowBorderBrush">#F0F0F0</SolidColorBrush>
         <SolidColorBrush x:Key="DataGridRowSelectedBorderBrush">#D9E3EF</SolidColorBrush>
+        <SolidColorBrush x:Key="TreeDataGridRowPointerOverBackground">#FAFAFA</SolidColorBrush>
+        <SolidColorBrush x:Key="TreeDataGridRowSelectedBackground">#D6E4FF</SolidColorBrush>
         <Thickness x:Key="DataGridRowBorderThickness">0,0,0,1</Thickness>
         <Thickness x:Key="TreeDataGridRowMargin">0</Thickness>
         <CornerRadius x:Key="TreeDataGridRowCornerRadius">0</CornerRadius>
@@ -12,10 +14,13 @@
         <Setter Property="BorderBrush" Value="{DynamicResource DataGridRowBorderBrush}" />
         <Setter Property="BorderThickness" Value="{DynamicResource DataGridRowBorderThickness}" />
     </Style>
+    <Style Selector="TreeDataGridRow:pointerover /template/ Border#RowBorder">
+        <Setter Property="Background" Value="{DynamicResource TreeDataGridRowPointerOverBackground}" />
+    </Style>
     <Style Selector="TreeDataGridRow:selected">
         <Setter Property="BorderBrush" Value="{DynamicResource DataGridRowSelectedBorderBrush}" />
     </Style>
     <Style Selector="TreeDataGridRow:selected /template/ Border#RowBorder">
-        <Setter Property="Background" Value="{DynamicResource TreeDataGridCellSelectedBackground}" />
+        <Setter Property="Background" Value="{DynamicResource TreeDataGridRowSelectedBackground}" />
     </Style>
 </Styles>

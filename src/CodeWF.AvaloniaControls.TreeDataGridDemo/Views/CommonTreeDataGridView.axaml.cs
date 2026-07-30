@@ -12,7 +12,7 @@ namespace CodeWF.AvaloniaControls.TreeDataGridDemo.Views;
 
 public partial class CommonTreeDataGridView : UserControl
 {
-    private static readonly IBrush HighlightBrush = SolidColorBrush.Parse("#E5E7EB");
+    private static readonly IBrush HighlightBrush = SolidColorBrush.Parse("#D9D9D9");
     private CommonTreeDataGridViewModel? _viewModel;
 
     public CommonTreeDataGridView()
