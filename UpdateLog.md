@@ -1,5 +1,9 @@
 # 更新日志
 
+## 11.1.1.6 (2026-07-30)
+
+- 🐛[修复]-TreeDataGrid 通过覆盖 Semi 模板使用的 `TreeDataGridRowMargin` 和 `TreeDataGridRowCornerRadius` 资源消除行背景缩进，避免低优先级样式无法覆盖模板值。
+
 ## 12.1.0.3 / 11.1.1.5 (2026-07-29)
 
 - 🔨[优化]-统一 DataGrid 与 TreeDataGrid 行底边框，普通行使用 `#F0F0F0`，选中行使用 `#D9E3EF`。
