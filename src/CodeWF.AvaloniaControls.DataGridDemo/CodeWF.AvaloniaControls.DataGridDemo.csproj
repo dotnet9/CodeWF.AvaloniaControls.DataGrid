@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
+    <IsPackable>false</IsPackable>
     <ApplicationIcon>..\..\logo.ico</ApplicationIcon>
     <TargetFrameworks>net11.0;net11.0-windows</TargetFrameworks>
     <Nullable>enable</Nullable>
@@ -8,12 +9,12 @@
     <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="12.1.1" />
-    <PackageReference Include="Avalonia.Desktop" Version="12.1.1" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="12.1.1" />
-    <PackageReference Include="Avalonia.Controls.DataGrid" Version="12.1.0" />
-    <PackageReference Include="Semi.Avalonia" Version="12.1.0" />
-    <PackageReference Include="VC-LTL" Version="5.3.1" />
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Include="Avalonia.Fonts.Inter" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" />
+    <PackageReference Include="Semi.Avalonia" />
+    <PackageReference Include="VC-LTL" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CodeWF.AvaloniaControls.DataGrid\CodeWF.AvaloniaControls.DataGrid.csproj" />
