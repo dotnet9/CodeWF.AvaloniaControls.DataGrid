@@ -1,5 +1,9 @@
 # 更新日志
 
+## 12.1.2.3 / 11.1.1.9 (2026-09-20)
+
+- 🚀[新增]-NuGet 包统一支持 `net8.0;net10.0;net11.0`，并发布新版本。
+
 ## 11.1.1.6 (2026-07-30)
 
 - 🐛[修复]-TreeDataGrid 通过覆盖 Semi 模板使用的 `TreeDataGridRowMargin` 和 `TreeDataGridRowCornerRadius` 资源消除行背景缩进，避免低优先级样式无法覆盖模板值。
@@ -60,44 +64,44 @@
 ## 11.2.1.9 - 2025-07-15
 
 - Added `CodeWF.AvaloniaControls.DataGrid`.
-
----
-
-## 归档：src\CodeWF.AvaloniaControls.DataGrid\UpdateLog.md
-
-# 更新日志
-
-V12.0.2（2026-05-02）
-
-- 😄[新增]-新增当前工程独立更新日志文件，后续 `CodeWF.AvaloniaControls.DataGrid` 的变更改为在工程目录内持续记录
-- 😄[新增]-保留最后一个免费开源官方 `Avalonia.Controls.DataGrid` 与 `Avalonia.Controls.TreeDataGrid` 兼容链路，便于继续对外分发旧版扩展包
-- 🔤[优化]-将当前工程改为显式固定旧版兼容依赖，不再走中央包管理，避免与 Avalonia 12 主线示例产生版本牵制
-- 🔤[优化]-整理并保留 `DataGrid` 三态排序、智能提示，以及 `TreeDataGrid` 三态排序与全选扩展，方便示例和业务项目复用
-
----
-
-## 归档：src\CodeWF.AvaloniaControls.DataGridDemo\UpdateLog.md
-
-# 更新日志
-
-V12.0.2（2026-05-02）
-
-- 😄[新增]-新增当前工程独立更新日志文件，后续 `CodeWF.AvaloniaControls.DataGridDemo` 的变更改为在工程目录内持续记录
-- 😄[新增]-新增独立旧版免费 `DataGrid` 专项示例工程，用于承载最后一个免费开源版本链路
-- 😄[新增]-新增大数据量 `TabControl` 切换演示场景，便于直观看到旧版 `DataGrid` 在多页签之间切换时的卡顿与重绘压力
-- 🔤[优化]-统一补充中文界面文案，并接入 `CodeWF.AvaloniaControls.DataGrid` 扩展方法用于三态排序与智能提示展示
-
----
-
-## 归档：src\CodeWF.AvaloniaControls.TreeDataGridDemo\UpdateLog.md
-
-# 更新日志
-
-V12.0.2（2026-05-02）
-
-- 😄[新增]-新增当前工程独立更新日志文件，后续 `CodeWF.AvaloniaControls.TreeDataGridDemo` 的变更改为在工程目录内持续记录
-- 😄[新增]-新增独立旧版免费 `TreeDataGrid` 专项示例工程，用于承载最后一个免费开源版本链路
-- 😄[新增]-新增大数据量 `TabControl` 切换演示场景，便于与旧版 `DataGrid` 做直观的切换流畅度对照
+
+---
+
+## 归档：src\CodeWF.AvaloniaControls.DataGrid\UpdateLog.md
+
+# 更新日志
+
+V12.0.2（2026-05-02）
+
+- 😄[新增]-新增当前工程独立更新日志文件，后续 `CodeWF.AvaloniaControls.DataGrid` 的变更改为在工程目录内持续记录
+- 😄[新增]-保留最后一个免费开源官方 `Avalonia.Controls.DataGrid` 与 `Avalonia.Controls.TreeDataGrid` 兼容链路，便于继续对外分发旧版扩展包
+- 🔤[优化]-将当前工程改为显式固定旧版兼容依赖，不再走中央包管理，避免与 Avalonia 12 主线示例产生版本牵制
+- 🔤[优化]-整理并保留 `DataGrid` 三态排序、智能提示，以及 `TreeDataGrid` 三态排序与全选扩展，方便示例和业务项目复用
+
+---
+
+## 归档：src\CodeWF.AvaloniaControls.DataGridDemo\UpdateLog.md
+
+# 更新日志
+
+V12.0.2（2026-05-02）
+
+- 😄[新增]-新增当前工程独立更新日志文件，后续 `CodeWF.AvaloniaControls.DataGridDemo` 的变更改为在工程目录内持续记录
+- 😄[新增]-新增独立旧版免费 `DataGrid` 专项示例工程，用于承载最后一个免费开源版本链路
+- 😄[新增]-新增大数据量 `TabControl` 切换演示场景，便于直观看到旧版 `DataGrid` 在多页签之间切换时的卡顿与重绘压力
+- 🔤[优化]-统一补充中文界面文案，并接入 `CodeWF.AvaloniaControls.DataGrid` 扩展方法用于三态排序与智能提示展示
+
+---
+
+## 归档：src\CodeWF.AvaloniaControls.TreeDataGridDemo\UpdateLog.md
+
+# 更新日志
+
+V12.0.2（2026-05-02）
+
+- 😄[新增]-新增当前工程独立更新日志文件，后续 `CodeWF.AvaloniaControls.TreeDataGridDemo` 的变更改为在工程目录内持续记录
+- 😄[新增]-新增独立旧版免费 `TreeDataGrid` 专项示例工程，用于承载最后一个免费开源版本链路
+- 😄[新增]-新增大数据量 `TabControl` 切换演示场景，便于与旧版 `DataGrid` 做直观的切换流畅度对照
 - 🔤[优化]-接入 `CodeWF.AvaloniaControls.DataGrid` 中的 `TreeDataGrid` 扩展方法，并统一整理为中文界面文案
 ## 2026-06-08 仓库规范整理
 
