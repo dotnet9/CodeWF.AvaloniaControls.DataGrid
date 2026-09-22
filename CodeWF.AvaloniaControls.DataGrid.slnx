@@ -3,6 +3,9 @@
     <Project Path="src/CodeWF.AvaloniaControls.DataGridDemo/CodeWF.AvaloniaControls.DataGridDemo.csproj" />
     <Project Path="src/CodeWF.AvaloniaControls.TreeDataGridDemo/CodeWF.AvaloniaControls.TreeDataGridDemo.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CodeWF.AvaloniaControls.Tests/CodeWF.AvaloniaControls.Tests.csproj" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".gitignore" />
     <File Path="Directory.Build.props" />
