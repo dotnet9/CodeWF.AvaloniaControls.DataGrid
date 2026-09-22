@@ -27,6 +27,7 @@ public static class DataGridExtension
 {
     private static readonly ConditionalWeakTable<DataGrid, DataGridSortingState> SortingRegistrations = new();
     private static readonly ConditionalWeakTable<DataGrid, DataGridDefaultState> DefaultRegistrations = new();
+    private static readonly ConditionalWeakTable<TextBlock, SmartToolTipRegistration> SmartToolTipRegistrations = new();
     private static readonly ConditionalWeakTable<TextBlock, ThemeAwareToolTipTextBlock> SmartToolTipContents = new();
 
     /// <summary>
@@ -250,7 +251,13 @@ public static class DataGridExtension
                 : null;
             _loadingRowHandler = (_, e) =>
                 DispatcherTimer.RunOnce(
-                    () => ProcessDataGridRow(e.Row, indexes),
+                    () =>
+                    {
+                        if (e.Row.IsAttachedToVisualTree())
+                        {
+                            ProcessDataGridRow(e.Row, indexes);
+                        }
+                    },
                     TimeSpan.FromMilliseconds(1000));
             _dataGrid.LoadingRow += _loadingRowHandler;
         }
@@ -387,19 +394,21 @@ public static class DataGridExtension
 
     private static void SetupSmartTooltip(TextBlock textBlock)
     {
-        if (textBlock.Tag != null)
+        if (SmartToolTipRegistrations.TryGetValue(textBlock, out _))
         {
             return;
         }
 
-        textBlock.Tag = true;
         textBlock.TextTrimming = TextTrimming.CharacterEllipsis;
+        SmartToolTipRegistrations.Add(
+            textBlock,
+            new SmartToolTipRegistration(
+                textBlock.GetObservable(TextBlock.TextProperty)
+                    .Subscribe(new AnonymousObserver<string?>(_ => UpdateToolTip(textBlock))),
+                textBlock.GetObservable(Visual.BoundsProperty)
+                    .Subscribe(new AnonymousObserver<Rect>(_ => UpdateToolTip(textBlock)))));
 
         UpdateToolTip(textBlock);
-        textBlock.GetObservable(TextBlock.TextProperty)
-            .Subscribe(new AnonymousObserver<string?>(_ => UpdateToolTip(textBlock)));
-        textBlock.GetObservable(Visual.BoundsProperty)
-            .Subscribe(new AnonymousObserver<Rect>(_ => UpdateToolTip(textBlock)));
     }
 
     private static void UpdateToolTip(TextBlock textBlock)
@@ -424,8 +433,9 @@ public static class DataGridExtension
                 textBlock,
                 formattedText.Width > textBlock.Bounds.Width ? GetSmartToolTipContent(textBlock) : null);
         }
-        catch
+        catch (ArgumentException)
         {
+            ToolTip.SetTip(textBlock, null);
         }
     }
 
@@ -435,6 +445,18 @@ public static class DataGridExtension
 
         content.Text = owner.Text;
         return content;
+    }
+
+    private sealed class SmartToolTipRegistration
+    {
+        private readonly IDisposable _textSubscription;
+        private readonly IDisposable _boundsSubscription;
+
+        public SmartToolTipRegistration(IDisposable textSubscription, IDisposable boundsSubscription)
+        {
+            _textSubscription = textSubscription;
+            _boundsSubscription = boundsSubscription;
+        }
     }
 
     private sealed class ThemeAwareToolTipTextBlock : TextBlock
