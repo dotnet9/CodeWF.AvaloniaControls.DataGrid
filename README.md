@@ -11,10 +11,10 @@ Avalonia DataGrid / TreeDataGrid 辅助包与可运行示例。
 
 ## 仓库规范
 
-- `CodeWF.AvaloniaControls.DataGrid` 与 `CodeWF.AvaloniaControls.DataGrid.Themes` 当前版本：`12.1.2.3`。
-- `CodeWF.AvaloniaControls.TreeDataGrid` 与 `CodeWF.AvaloniaControls.TreeDataGrid.Themes` 当前版本：`11.1.1.9`。
-- 每个 NuGet 项目的包版本和依赖版本在各自 `.csproj` 中维护，避免 DataGrid、TreeDataGrid 和 Demo 之间的 Avalonia 版本线互相牵制。
-- NuGet 包项目统一支持 `net8.0;net10.0`；Demo、App、测试与内部应用项目统一使用 `net11.0` / `net11.0-windows`。
+- `CodeWF.AvaloniaControls.DataGrid` 与 `CodeWF.AvaloniaControls.DataGrid.Themes` 当前版本：`12.1.2.5`。
+- `CodeWF.AvaloniaControls.TreeDataGrid` 与 `CodeWF.AvaloniaControls.TreeDataGrid.Themes` 当前版本：`11.1.1.11`。
+- NuGet 包项目统一支持 `net8.0;net10.0;net11.0`；Demo 项目使用 `net11.0` / `net11.0-windows`。
+- DataGrid 与 TreeDataGrid 的 Avalonia 依赖版本在根目录 `Directory.Packages.props` 中按包线集中维护。
 - 根目录 `logo.svg`、`logo.png`、`logo.ico` 是唯一图标源，子工程只通过 MSBuild `Link` 引用，不维护图标副本。
 - 运行时帮助、Markdown 示例、内置备忘录、设计说明等业务文档按功能保留；仓库级入口文档使用根目录 `README.md` 和 `UpdateLog.md`。
 
@@ -59,15 +59,15 @@ treeDataGrid.EnableDefaults(source);
 
 `CodeWF.AvaloniaControls.DataGrid` 是 MIT 协议的免费开源 DataGrid 扩展包：
 
-- `Avalonia.Controls.DataGrid` `12.0.1`
-- `Semi.Avalonia.DataGrid` `12.0.0`
-- `Semi.Avalonia` `12.0.3`
+- `Avalonia.Controls.DataGrid` `12.1.2`
+- `Semi.Avalonia.DataGrid` `12.1.0.1`
+- `Semi.Avalonia` `12.1.0.1`
 
 `CodeWF.AvaloniaControls.TreeDataGrid` 固定在旧版免费 TreeDataGrid 包线：
 
 - `Avalonia.Controls.TreeDataGrid` `11.1.1`
 - `Semi.Avalonia.TreeDataGrid` `11.1.1.1`
-- `Semi.Avalonia` `11.3.7.3`
+- `Semi.Avalonia` `11.3.7`
 
 该包提供 TreeDataGrid 三态排序、全选、智能 ToolTip 和统一默认增强扩展方法。
 

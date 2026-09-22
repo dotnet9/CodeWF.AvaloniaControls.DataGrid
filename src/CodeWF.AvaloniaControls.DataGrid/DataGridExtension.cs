@@ -53,8 +53,7 @@ public static class DataGridExtension
 
         if (enableSmartTooltips && !state.SmartTooltipsEnabled)
         {
-            dataGrid.EnableSmartTooltips();
-            state.SmartTooltipsEnabled = true;
+            state.EnableSmartTooltips();
         }
     }
 
@@ -215,7 +214,9 @@ public static class DataGridExtension
 
         public bool SortingEnabled { get; set; }
 
-        public bool SmartTooltipsEnabled { get; set; }
+        public bool SmartTooltipsEnabled => _loadingRowHandler is not null;
+
+        private EventHandler<DataGridRowEventArgs>? _loadingRowHandler;
 
         public void EnableNaturalSorting()
         {
@@ -232,6 +233,23 @@ public static class DataGridExtension
             }
 
             ApplyNaturalSortComparers();
+        }
+
+        public void EnableSmartTooltips(params int[]? targetColumnIndexes)
+        {
+            if (_loadingRowHandler is not null)
+            {
+                return;
+            }
+
+            var indexes = targetColumnIndexes is { Length: > 0 }
+                ? targetColumnIndexes.Distinct().ToArray()
+                : null;
+            _loadingRowHandler = (_, e) =>
+                DispatcherTimer.RunOnce(
+                    () => ProcessDataGridRow(e.Row, indexes),
+                    TimeSpan.FromMilliseconds(1000));
+            _dataGrid.LoadingRow += _loadingRowHandler;
         }
 
         private void OnColumnsChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -303,8 +321,8 @@ public static class DataGridExtension
     /// </summary>
     public static void EnableSmartTooltips(this DataGrid dataGrid)
     {
-        dataGrid.LoadingRow += (_, e) =>
-            DispatcherTimer.RunOnce(() => ProcessDataGridRow(e.Row), TimeSpan.FromMilliseconds(1000));
+        var state = DefaultRegistrations.GetValue(dataGrid, grid => new DataGridDefaultState(grid));
+        state.EnableSmartTooltips();
     }
 
     /// <summary>
@@ -312,8 +330,8 @@ public static class DataGridExtension
     /// </summary>
     public static void EnableSmartTooltips(this DataGrid dataGrid, params int[] targetColumnIndexes)
     {
-        dataGrid.LoadingRow += (_, e) =>
-            DispatcherTimer.RunOnce(() => ProcessDataGridRow(e.Row, targetColumnIndexes), TimeSpan.FromMilliseconds(1000));
+        var state = DefaultRegistrations.GetValue(dataGrid, grid => new DataGridDefaultState(grid));
+        state.EnableSmartTooltips(targetColumnIndexes);
     }
 
     private static void ProcessDataGridRow(DataGridRow row, int[]? targetColumnIndexes = default)

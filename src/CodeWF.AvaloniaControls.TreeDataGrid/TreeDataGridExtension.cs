@@ -23,6 +23,8 @@ namespace CodeWF.AvaloniaControls;
 public static class TreeDataGridExtension
 {
     private static readonly ConditionalWeakTable<TreeDataGrid, TreeDataGridSortingState> SortingRegistrations = new();
+    private static readonly ConditionalWeakTable<TreeDataGrid, TreeDataGridSelectAllState> SelectAllRegistrations = new();
+    private static readonly ConditionalWeakTable<TreeDataGrid, TreeDataGridSmartTooltipsState> SmartTooltipsRegistrations = new();
     private static readonly ConditionalWeakTable<TextBlock, ThemeAwareToolTipTextBlock> SmartToolTipContents = new();
 
     /// <summary>
@@ -141,27 +143,89 @@ public static class TreeDataGridExtension
     public static void AddSelectAll<T>(this TreeDataGrid treeDataGrid, FlatTreeDataGridSource<T> itemSource)
         where T : class
     {
-        treeDataGrid.AddHandler(InputElement.KeyDownEvent, (_, e) =>
+        _ = itemSource;
+        if (SelectAllRegistrations.TryGetValue(treeDataGrid, out _))
         {
-            if (e.KeyModifiers == KeyModifiers.Control && e.Key == Key.A)
-            {
-                itemSource.RowSelection?.Clear();
-                itemSource.RowSelection?.BeginBatchUpdate();
+            return;
+        }
 
-                for (var i = 0; i < itemSource.Rows.Count; i++)
+        var state = new TreeDataGridSelectAllState(
+            treeDataGrid,
+            TreeDataGridSelectAllState.SelectAllRows<T>);
+        SelectAllRegistrations.Add(treeDataGrid, state);
+        state.Enable();
+    }
+
+    private sealed class TreeDataGridSelectAllState
+    {
+        private readonly TreeDataGrid _treeDataGrid;
+        private readonly Action<ITreeDataGridSource, bool> _selectionHandler;
+
+        public TreeDataGridSelectAllState(
+            TreeDataGrid treeDataGrid,
+            Action<ITreeDataGridSource, bool> selectionHandler)
+        {
+            _treeDataGrid = treeDataGrid;
+            _selectionHandler = selectionHandler;
+        }
+
+        public void Enable()
+        {
+            _treeDataGrid.AddHandler(InputElement.KeyDownEvent, OnKeyDown, RoutingStrategies.Tunnel);
+        }
+
+        private void OnKeyDown(object? sender, KeyEventArgs e)
+        {
+            if (e.Source is TextBox ||
+                (e.Source as Control)?.FindAncestorOfType<TextBox>() is not null ||
+                e.Key != Key.A ||
+                e.KeyModifiers is not (KeyModifiers.Control or (KeyModifiers.Control | KeyModifiers.Shift)) ||
+                _treeDataGrid.Source is not ITreeDataGridSource source)
+            {
+                return;
+            }
+
+            if (e.KeyModifiers == KeyModifiers.Control)
+            {
+                _selectionHandler(source, true);
+            }
+            else
+            {
+                _selectionHandler(source, false);
+            }
+
+            e.Handled = true;
+        }
+
+        public static void SelectAllRows<T>(ITreeDataGridSource source, bool selectAll)
+            where T : class
+        {
+            if (source is not FlatTreeDataGridSource<T> flatSource ||
+                flatSource.RowSelection is not { } rowSelection)
+            {
+                return;
+            }
+
+            rowSelection.Clear();
+            if (!selectAll)
+            {
+                return;
+            }
+
+            rowSelection.BeginBatchUpdate();
+
+            try
+            {
+                for (var i = 0; i < flatSource.Rows.Count; i++)
                 {
-                    itemSource.RowSelection?.Select(new IndexPath(i));
+                    rowSelection.Select(new IndexPath(i));
                 }
-
-                itemSource.RowSelection?.EndBatchUpdate();
-                e.Handled = true;
             }
-            else if (e.KeyModifiers == (KeyModifiers.Control | KeyModifiers.Shift) && e.Key == Key.A)
+            finally
             {
-                itemSource.RowSelection?.Clear();
-                e.Handled = true;
+                rowSelection.EndBatchUpdate();
             }
-        }, RoutingStrategies.Tunnel);
+        }
     }
 
     /// <summary>
@@ -169,16 +233,10 @@ public static class TreeDataGridExtension
     /// </summary>
     public static void EnableSmartTooltips(this TreeDataGrid treeDataGrid)
     {
-        treeDataGrid.RowPrepared += (_, e) =>
-        {
-            var row = e.Row;
-            if (row is null)
-            {
-                return;
-            }
-
-            DispatcherTimer.RunOnce(() => ProcessTreeDataGridRow(row), TimeSpan.FromMilliseconds(1000));
-        };
+        var state = SmartTooltipsRegistrations.GetValue(
+            treeDataGrid,
+            grid => new TreeDataGridSmartTooltipsState(grid));
+        state.Enable();
     }
 
     /// <summary>
@@ -186,7 +244,38 @@ public static class TreeDataGridExtension
     /// </summary>
     public static void EnableSmartTooltips(this TreeDataGrid treeDataGrid, params int[] targetColumnIndexes)
     {
-        treeDataGrid.RowPrepared += (_, e) =>
+        var state = SmartTooltipsRegistrations.GetValue(
+            treeDataGrid,
+            grid => new TreeDataGridSmartTooltipsState(grid));
+        state.Enable(targetColumnIndexes);
+    }
+
+    private sealed class TreeDataGridSmartTooltipsState
+    {
+        private readonly TreeDataGrid _treeDataGrid;
+        private int[]? _targetColumnIndexes;
+        private bool _enabled;
+
+        public TreeDataGridSmartTooltipsState(TreeDataGrid treeDataGrid)
+        {
+            _treeDataGrid = treeDataGrid;
+        }
+
+        public void Enable(params int[]? targetColumnIndexes)
+        {
+            if (_enabled)
+            {
+                return;
+            }
+
+            _enabled = true;
+            _targetColumnIndexes = targetColumnIndexes is { Length: > 0 }
+                ? targetColumnIndexes.Distinct().ToArray()
+                : null;
+            _treeDataGrid.RowPrepared += OnRowPrepared;
+        }
+
+        private void OnRowPrepared(object? sender, TreeDataGridRowEventArgs e)
         {
             var row = e.Row;
             if (row is null)
@@ -194,8 +283,10 @@ public static class TreeDataGridExtension
                 return;
             }
 
-            DispatcherTimer.RunOnce(() => ProcessTreeDataGridRow(row, targetColumnIndexes), TimeSpan.FromMilliseconds(1000));
-        };
+            DispatcherTimer.RunOnce(
+                () => ProcessTreeDataGridRow(row, _targetColumnIndexes),
+                TimeSpan.FromMilliseconds(1000));
+        }
     }
 
     [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicFields, typeof(TreeDataGrid))]
