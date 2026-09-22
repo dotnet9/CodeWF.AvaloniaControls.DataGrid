@@ -70,7 +70,7 @@ public static class TreeDataGridExtension
         treeDataGrid.AddHandler(Button.ClickEvent, (_, e) =>
         {
             if (e.Source is not TreeDataGridColumnHeader header ||
-                treeDataGrid.Source is not ITreeDataGridSource source ||
+                treeDataGrid.Source is not FlatTreeDataGridSource<T> source ||
                 source.Columns is not IList columns ||
                 header.ColumnIndex < 0 ||
                 header.ColumnIndex >= columns.Count ||
@@ -90,7 +90,7 @@ public static class TreeDataGridExtension
                 return;
             }
 
-            if (source.SortBy(column, nextDirection.Value))
+            if (((ITreeDataGridSource)source).SortBy(column, nextDirection.Value))
             {
                 state.Set(column, nextDirection.Value);
             }
@@ -198,9 +198,14 @@ public static class TreeDataGridExtension
         };
     }
 
-    [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "Legacy TreeDataGrid 11.1.1 has no public API to clear sorting.")]
-    [UnconditionalSuppressMessage("AOT", "IL3050", Justification = "Legacy TreeDataGrid 11.1.1 has no public API to clear sorting.")]
-    private static void ClearSorting(TreeDataGrid treeDataGrid, ITreeDataGridSource source, IList columns)
+    [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicFields, typeof(TreeDataGrid))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.NonPublicFields, typeof(FlatTreeDataGridSource<>))]
+    [DynamicDependency(
+        DynamicallyAccessedMemberTypes.NonPublicFields,
+        "Avalonia.Controls.Models.TreeDataGrid.AnonymousSortableRows`1",
+        "Avalonia.Controls.TreeDataGrid")]
+    private static void ClearSorting<T>(TreeDataGrid treeDataGrid, FlatTreeDataGridSource<T> source, IList columns)
+        where T : class
     {
         foreach (var item in columns)
         {
@@ -224,19 +229,33 @@ public static class TreeDataGridExtension
         treeDataGrid.Source = source;
     }
 
-    [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "Legacy TreeDataGrid 11.1.1 has no public API to clear sorting.")]
-    [UnconditionalSuppressMessage("AOT", "IL3050", Justification = "Legacy TreeDataGrid 11.1.1 has no public API to clear sorting.")]
     private static void ClearPrivateField(object target, string fieldName)
     {
         SetPrivateField(target, fieldName, null);
     }
 
-    [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "Legacy TreeDataGrid 11.1.1 has no public API to clear sorting.")]
-    [UnconditionalSuppressMessage("AOT", "IL3050", Justification = "Legacy TreeDataGrid 11.1.1 has no public API to clear sorting.")]
+    [UnconditionalSuppressMessage(
+        "Trimming",
+        "IL2075",
+        Justification = "ClearSorting preserves the private fields of the fixed legacy TreeDataGrid types with DynamicDependency.")]
     private static void SetPrivateField(object target, string fieldName, object? value)
     {
-        var flags = BindingFlags.Instance | BindingFlags.NonPublic;
-        target.GetType().GetField(fieldName, flags)?.SetValue(target, value);
+        var type = target.GetType();
+        while (type is not null)
+        {
+            var field = type.GetField(
+                fieldName,
+                BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
+            if (field is not null)
+            {
+                field.SetValue(target, value);
+                return;
+            }
+
+            type = type.BaseType;
+        }
+
+        throw new MissingFieldException(target.GetType().FullName, fieldName);
     }
 
     private static void ProcessTreeDataGridRow(TreeDataGridRow? row, int[]? targetColumnIndexes = default)
@@ -306,17 +325,9 @@ public static class TreeDataGridExtension
         }
     }
 
-    [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "Legacy TreeDataGrid 11.1.1 exposes cell column indexes through an internal visual type.")]
-    [UnconditionalSuppressMessage("AOT", "IL3050", Justification = "Legacy TreeDataGrid 11.1.1 exposes cell column indexes through an internal visual type.")]
     private static int? TryGetTreeDataGridCellColumnIndex(Visual visual)
     {
-        var property = visual.GetType().GetProperty("ColumnIndex", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-        if (property?.PropertyType != typeof(int))
-        {
-            return null;
-        }
-
-        return property.GetValue(visual) is int columnIndex ? columnIndex : null;
+        return visual is TreeDataGridCell cell ? cell.ColumnIndex : null;
     }
 
     private static void FindVisualChildren<T>(Visual? visual, List<T> array) where T : Visual

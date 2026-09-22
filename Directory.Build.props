@@ -8,8 +8,8 @@
     <UseArtifactsOutput>true</UseArtifactsOutput>
     <ArtifactsPath>$(MSBuildThisFileDirectory)artifacts\</ArtifactsPath>
     <PackageOutputPath>$(ArtifactsPath)packages\</PackageOutputPath>
-    <DataGridPackageVersion>12.1.2.3</DataGridPackageVersion>
-    <TreeDataGridPackageVersion>11.1.1.9</TreeDataGridPackageVersion>
+    <DataGridPackageVersion>12.1.2.4</DataGridPackageVersion>
+    <TreeDataGridPackageVersion>11.1.1.10</TreeDataGridPackageVersion>
     <Version Condition="'$(MSBuildProjectName)' == 'CodeWF.AvaloniaControls.DataGrid' Or '$(MSBuildProjectName)' == 'CodeWF.AvaloniaControls.DataGrid.Themes'">$(DataGridPackageVersion)</Version>
     <Version Condition="'$(MSBuildProjectName)' == 'CodeWF.AvaloniaControls.TreeDataGrid' Or '$(MSBuildProjectName)' == 'CodeWF.AvaloniaControls.TreeDataGrid.Themes'">$(TreeDataGridPackageVersion)</Version>
     <Authors>沙漠尽头的狼</Authors>

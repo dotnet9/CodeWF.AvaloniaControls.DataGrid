@@ -12,10 +12,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace CodeWF.AvaloniaControls;
@@ -30,8 +28,6 @@ public static class DataGridExtension
     private static readonly ConditionalWeakTable<DataGrid, DataGridSortingState> SortingRegistrations = new();
     private static readonly ConditionalWeakTable<DataGrid, DataGridDefaultState> DefaultRegistrations = new();
     private static readonly ConditionalWeakTable<TextBlock, ThemeAwareToolTipTextBlock> SmartToolTipContents = new();
-    private static readonly MethodInfo? GetSortPropertyNameMethod =
-        typeof(DataGridColumn).GetMethod("GetSortPropertyName", BindingFlags.Instance | BindingFlags.NonPublic);
 
     /// <summary>
     /// 为 DataGrid 一次性启用默认增强：三态排序、自然排序和智能 ToolTip。
@@ -152,17 +148,22 @@ public static class DataGridExtension
             return DataGridSortDescription.FromComparer(comparer, direction);
         }
 
-        var memberPath = GetSortPropertyName(column);
+        var memberPath = GetSortPropertyPath(column);
         return string.IsNullOrWhiteSpace(memberPath)
             ? null
             : DataGridSortDescription.FromPath(memberPath, direction, culture);
     }
 
-    [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "Avalonia DataGrid derives the default sort path from an internal helper.")]
-    [UnconditionalSuppressMessage("AOT", "IL3050", Justification = "Avalonia DataGrid derives the default sort path from an internal helper.")]
-    private static string? GetSortPropertyName(DataGridColumn column)
+    private static string? GetSortPropertyPath(DataGridColumn column)
     {
-        return GetSortPropertyNameMethod?.Invoke(column, null) as string ?? column.SortMemberPath;
+        if (!string.IsNullOrWhiteSpace(column.SortMemberPath))
+        {
+            return column.SortMemberPath;
+        }
+
+        return column is DataGridBoundColumn { Binding: Binding binding }
+            ? binding.Path
+            : null;
     }
 
     private sealed class DataGridSortingState
@@ -274,7 +275,7 @@ public static class DataGridExtension
                 return binding.Path;
             }
 
-            return GetSortPropertyName(column);
+            return GetSortPropertyPath(column);
         }
     }
 
