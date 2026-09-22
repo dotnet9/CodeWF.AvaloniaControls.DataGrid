@@ -86,7 +86,7 @@ public static class DataGridExtension
                 return;
             }
 
-            var nextDirection = state.GetNextDirection(e.Column);
+            var nextDirection = state.GetNextDirection(e.Column, view);
             view.SortDescriptions.Clear();
 
             if (nextDirection is not null)
@@ -167,13 +167,15 @@ public static class DataGridExtension
 
     private sealed class DataGridSortingState
     {
+        private DataGridCollectionView? _view;
         private DataGridColumn? _column;
         private ListSortDirection? _direction;
 
-        public ListSortDirection? GetNextDirection(DataGridColumn column)
+        public ListSortDirection? GetNextDirection(DataGridColumn column, DataGridCollectionView view)
         {
-            if (!ReferenceEquals(_column, column))
+            if (!ReferenceEquals(_view, view) || !ReferenceEquals(_column, column))
             {
+                _view = view;
                 _column = column;
                 _direction = ListSortDirection.Ascending;
                 return _direction;
@@ -197,6 +199,7 @@ public static class DataGridExtension
 
         public void Clear()
         {
+            _view = null;
             _column = null;
             _direction = null;
         }

@@ -84,7 +84,7 @@ public static class TreeDataGridExtension
             e.Handled = true;
             treeDataGrid.CanUserSortColumns = false;
 
-            var nextDirection = state.GetNextDirection(column);
+            var nextDirection = state.GetNextDirection(column, source);
             if (nextDirection is null)
             {
                 state.Clear();
@@ -105,13 +105,17 @@ public static class TreeDataGridExtension
 
     private sealed class TreeDataGridSortingState
     {
+        private ITreeDataGridSource? _source;
         private IColumn? _column;
         private ListSortDirection? _direction;
 
-        public ListSortDirection? GetNextDirection(IColumn column)
+        public ListSortDirection? GetNextDirection(IColumn column, ITreeDataGridSource source)
         {
-            if (!ReferenceEquals(_column, column))
+            if (!ReferenceEquals(_source, source) || !ReferenceEquals(_column, column))
             {
+                _source = source;
+                _column = column;
+                _direction = ListSortDirection.Ascending;
                 return ListSortDirection.Ascending;
             }
 
@@ -132,6 +136,7 @@ public static class TreeDataGridExtension
 
         public void Clear()
         {
+            _source = null;
             _column = null;
             _direction = null;
         }
