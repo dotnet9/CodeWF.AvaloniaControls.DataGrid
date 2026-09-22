@@ -2,6 +2,8 @@
     x:Class="CodeWF.AvaloniaControls.DataGridDemo.Views.CommonDataGridView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:CodeWF.AvaloniaControls.DataGridDemo.ViewModels"
+    x:DataType="vm:CommonDataGridViewModel"
     Background="White">
     <Grid Margin="12" RowDefinitions="Auto,*" RowSpacing="10">
         <Border

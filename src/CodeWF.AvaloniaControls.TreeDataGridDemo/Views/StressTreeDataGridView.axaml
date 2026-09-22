@@ -3,6 +3,8 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:tdg="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls.TreeDataGrid"
+    xmlns:vm="using:CodeWF.AvaloniaControls.TreeDataGridDemo.ViewModels"
+    x:DataType="vm:StressTreeDataGridViewModel"
     Background="White">
     <tdg:TreeDataGrid x:Name="StressTreeDataGrid" />
 </UserControl>
