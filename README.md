@@ -93,3 +93,19 @@ treeDataGrid.EnableDefaults(source);
 ## 说明
 
 该仓库将 DataGrid 与 TreeDataGrid 扩展拆分为两条独立 NuGet 包线：DataGrid 跟随免费开源的 Avalonia 12 DataGrid 包，TreeDataGrid 固定在旧版免费包线以规避后续商业 License 约束。
+
+## CI/CD：自动发布 NuGet 包
+
+推送 `v*` 标签（例如 `v12.1.2.12`）会触发 [.github/workflows/publish-nuget.yml](.github/workflows/publish-nuget.yml)，一次发布四个包：`CodeWF.AvaloniaControls.DataGrid`、`CodeWF.AvaloniaControls.DataGrid.Themes`、`CodeWF.AvaloniaControls.TreeDataGrid`、`CodeWF.AvaloniaControls.TreeDataGrid.Themes`（含 snupkg 符号包），完成后自动创建 GitHub Release。
+
+本仓库有两条独立版本线（`Directory.Build.props` 的 `DataGridPackageVersion` 与 `TreeDataGridPackageVersion`），标签以 DataGrid 版本为参照；**打标签前先把本次要发布的版本线升好**——nuget.org 拒绝重复的版本号，未升版本的包会被 `--skip-duplicate` 自动跳过。认证使用 NuGet Trusted Publishing：工作流通过 `nuget/login@v1` 以 OIDC 令牌换取一次性发布凭据，仓库不保存任何 secret。nuget.org 侧的 API key 需绑定本仓库与工作流文件名 `publish-nuget.yml`（Scopes 勾选 Push，Glob 建议收窄为 `CodeWF.*`）；这类 key 创建后 7 天内需成功发布一次才会转永久有效。
+
+手工发布步骤：
+
+```bash
+# 1. 升版本：修改 Directory.Build.props 中对应版本线并提交
+# 2. 打标签（用 DataGrid 版本号）并推送，触发发布
+git tag -a v12.1.2.13 -m "CodeWF.AvaloniaControls.DataGrid v12.1.2.13"
+git push origin v12.1.2.13
+# 3. 在 GitHub Actions 观察 publish-nuget 运行，完成后到 nuget.org 核对四个包
+```
